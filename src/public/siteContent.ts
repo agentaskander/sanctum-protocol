@@ -23,6 +23,10 @@ export type PublicPage = {
   cta: string
   diagram: DiagramKind
   updated: string
+  seoBody?: string[]
+  seoCategory?: string
+  seoAudience?: string
+  seoDisclaimer?: string
 }
 
 const origin = 'https://sanctumprotocol.org'
@@ -171,6 +175,24 @@ const pageDetails: Record<string, { label: string; principle: string; observe: s
     observe: ['The strongest visible friction', 'Which intervention is easiest to maintain', 'How the room should feel after the change'],
     tune: ['Sequence changes by room layer', 'Avoid proprietary logic', 'Preserve the premium SANCTUM voice while staying practical'],
   },
+  Stories: {
+    label: 'SEO Library',
+    principle: 'SANCTUM stories translate environmental intelligence into public narratives about sleep, focus, recovery, nature contact, and room rhythm.',
+    observe: ['The room condition at the start of the story', 'The human state the room should support', 'The public-safe environmental layer being changed'],
+    tune: ['Keep the story architectural and experiential', 'Avoid private method details', 'Connect the narrative back to the public framework'],
+  },
+  Articles: {
+    label: 'SEO Library',
+    principle: 'SANCTUM articles build public authority around environmental intelligence, healthy homes, sensory architecture, and recovery-oriented spaces.',
+    observe: ['Which public concept needs definition', 'Which claim needs clearer boundaries', 'Where readers need practical examples'],
+    tune: ['Use plain public vocabulary', 'Separate education from medical claims', 'Link articles to the public framework'],
+  },
+  Guides: {
+    label: 'SEO Library',
+    principle: 'SANCTUM guides give public-safe steps for improving rooms through light, sound, air, nature, material, and rhythm.',
+    observe: ['The room purpose', 'The strongest sensory friction', 'The easiest intervention to maintain'],
+    tune: ['Start with one room and one state', 'Sequence changes by environmental layer', 'Keep the guidance useful without exposing private logic'],
+  },
 }
 
 function page(path: string, title: string, description: string, h1: string, topic: string, diagram: DiagramKind): PublicPage {
@@ -226,4 +248,33 @@ export const pages: PublicPage[] = [
   page('/design-systems', 'Design Systems | SANCTUM Protocol', 'Environmental intelligence design systems for professional implementation with clear public boundaries.', 'Design Systems', 'Design Systems', 'recovery-framework'),
   page('/case-studies', 'Case Studies | SANCTUM Protocol', 'Public-safe SANCTUM case study language for human-centered environments, sanctuary design, and spatial intelligence.', 'Case Studies', 'Case Studies', 'nature-ladder'),
   page('/implementation-guides', 'Implementation Guides | SANCTUM Protocol', 'Implementation guides for public-safe environmental intelligence across light, sound, air, nature, materials, and room rhythm.', 'Implementation Guides', 'Implementation Guides', 'sleep-factors'),
+  page('/stories', 'Stories | SANCTUM Protocol', 'Public stories about environmental intelligence, sleep, focus, recovery, nature contact, and room rhythm.', 'Stories', 'Stories', 'recovery-framework'),
+  page('/articles', 'Articles | SANCTUM Protocol', 'Articles on environmental intelligence, healthy homes, sensory architecture, recovery spaces, and human-centered room design.', 'Articles', 'Articles', 'environmental-layers'),
+  page('/guides', 'Guides | SANCTUM Protocol', 'Public-safe SANCTUM guides for improving rooms through light, sound, air, nature, material, and daily rhythm.', 'Guides', 'Guides', 'healthy-home'),
 ]
+
+const betaSources = [
+  '/',
+  '/professional-frameworks',
+  '/room-archetypes',
+  '/assessments',
+  '/design-systems',
+  '/case-studies',
+  '/implementation-guides',
+]
+
+export const betaPages: PublicPage[] = betaSources.map((sourcePath) => {
+  const source = pages.find((item) => item.path === sourcePath) ?? pages[0]
+  const betaPath = sourcePath === '/' ? '/beta' : `/beta${sourcePath}`
+  return {
+    ...source,
+    path: betaPath,
+    canonical: `${origin}${betaPath}`,
+    title: `Beta Preview | ${source.title}`,
+    h1: sourcePath === '/' ? 'SANCTUM Protocol Beta Preview' : `${source.h1} Beta Preview`,
+    label: 'Beta Preview',
+    description: `Public-preview beta route for ${source.h1}. ${source.description}`,
+    intro: `${source.intro} This beta route is a public-preview surface and contains no internal ontology imports or private implementation logic.`,
+    cta: `Preview ${source.h1} in the SANCTUM Protocol beta route namespace.`,
+  }
+})

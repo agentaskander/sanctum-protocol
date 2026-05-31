@@ -1,4 +1,4 @@
-import { frameworkLayers, pages, pillars, type PublicPage } from './siteContent'
+import { frameworkLayers, pillars, type PublicPage } from './siteContent'
 
 export function SeoHead(page: PublicPage) {
   document.title = page.title
@@ -120,6 +120,7 @@ function PillarPage(page: PublicPage) {
         ${ListPanel('What To Tune', page.tune)}
       </section>
       ${DeepSeoSection(page)}
+      ${SeoArticleSection(page)}
       ${ChecklistBlock(page.checklist)}
       <section id="related" class="cinema-section">
         <div class="section-head">
@@ -236,6 +237,22 @@ function DeepSeoSection(page: PublicPage) {
   `
 }
 
+function SeoArticleSection(page: PublicPage) {
+  if (!page.seoBody) return ''
+
+  return `
+    <section class="cinema-section article-section">
+      <div class="section-head">
+        <p class="kicker">${page.seoCategory ?? 'Public Library'}</p>
+        <h2>${page.h1}</h2>
+        ${page.seoAudience ? `<p>Audience: ${page.seoAudience}</p>` : ''}
+      </div>
+      <div class="article-body">${page.seoBody.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div>
+      ${page.seoDisclaimer ? `<div class="disclaimer"><strong>Disclaimer</strong><p>${page.seoDisclaimer}</p></div>` : ''}
+    </section>
+  `
+}
+
 export function PublicDiagram(kind: PublicPage['diagram'], className = '') {
   const labels = diagramLabels[kind]
   return `
@@ -320,9 +337,4 @@ function setLink(rel: string, href: string) {
     document.head.appendChild(tag)
   }
   tag.href = href
-}
-
-export function pageForPath(pathname: string) {
-  const normalized = pathname.replace(/\/$/, '') || '/'
-  return pages.find((page) => page.path === normalized) ?? pages[0]
 }
