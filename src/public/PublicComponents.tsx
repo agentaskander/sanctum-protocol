@@ -1,4 +1,6 @@
 import { frameworkLayers, pillars, type PublicPage } from './siteContent'
+import { OriginalProtocolVisual } from './originalVisuals'
+import { glossaryCategories, glossaryEntries } from './glossaryLibrary'
 
 export function SeoHead(page: PublicPage) {
   document.title = page.title
@@ -16,7 +18,22 @@ export function SeoHead(page: PublicPage) {
 }
 
 export function PageShell(page: PublicPage) {
+  if (page.path === '/glossary') return GlossaryPage(page)
   return page.path === '/' ? HomePage(page) : PillarPage(page)
+}
+
+export function BindPublicInteractions() {
+  const search = document.getElementById('glossary-search') as HTMLInputElement | null
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.glossary-card'))
+  if (!search || !cards.length) return
+
+  search.addEventListener('input', () => {
+    const query = search.value.trim().toLowerCase()
+    cards.forEach((card) => {
+      const haystack = `${card.dataset.term ?? ''} ${card.dataset.category ?? ''} ${card.textContent ?? ''}`.toLowerCase()
+      card.hidden = query.length > 0 && !haystack.includes(query)
+    })
+  })
 }
 
 function HomePage(page: PublicPage) {
@@ -25,10 +42,11 @@ function HomePage(page: PublicPage) {
       brand: 'SANCTUM Protocol',
       eyebrow: 'Environmental Intelligence',
       title: 'Environmental Intelligence for Human Spaces',
-      copy: 'SANCTUM Protocol is a public framework for understanding how environments shape sleep, attention, recovery, and human flourishing.',
+      copy: 'SANCTUM Protocol is a research framework for understanding how environments shape sleep, attention, recovery, and human flourishing.',
       primary: ['Explore the Framework', '#framework'],
       secondary: ['View Research Pillars', '#research'],
       diagram: 'environmental-layers',
+      visual: 'protocol',
     })}
     <main>
       <section id="framework" class="cinema-section split-section">
@@ -38,15 +56,15 @@ function HomePage(page: PublicPage) {
         </div>
         <div class="large-copy">
           <p>Light changes alertness. Sound changes vigilance. Air changes comfort before language can name it. Nature changes orientation. Material changes touch and thermal feeling. Rhythm changes when a room asks the body to rise, focus, downshift, or recover.</p>
-          <p>Environmental intelligence gives those forces a public framework. It turns rooms into legible human-centered environments without exposing private systems or hidden evaluation machinery.</p>
+          <p>Environmental intelligence gives those forces a research framework. It turns rooms into legible human-centered environments without exposing private systems or hidden evaluation machinery.</p>
         </div>
       </section>
       <section class="cinema-section">
         <div class="section-head">
-          <p class="kicker">Public Framework</p>
+          <p class="kicker">Environmental Intelligence Framework</p>
           <h2>Environmental Intelligence Layers</h2>
         </div>
-        ${PublicDiagram('environmental-layers', 'hero-diagram')}
+        ${OriginalProtocolVisual('environment', 'hero-diagram')}
         <div class="layer-grid">${frameworkLayers.map((layer) => SurfaceCard(layer.title, layer.text, 'Framework Layer')).join('')}</div>
       </section>
       <section id="pillars" class="cinema-section">
@@ -58,7 +76,7 @@ function HomePage(page: PublicPage) {
       </section>
       <section id="research" class="cinema-section library-section">
         <div>
-          <p class="kicker">Public Research Library</p>
+          <p class="kicker">Research Framework</p>
           <h2>An authority library for environmental intelligence.</h2>
         </div>
         <div class="library-grid">
@@ -70,18 +88,18 @@ function HomePage(page: PublicPage) {
       <section class="cinema-section library-section">
         <div>
           <p class="kicker">Professional Layer</p>
-          <h2>The bridge from public category language to implementation.</h2>
+          <h2>The bridge from category language to implementation.</h2>
         </div>
         <div class="library-grid">
-          ${LinkPanel('Professional Frameworks', 'Client-ready environmental intelligence with clear public boundaries and no internal implementation detail.', '/professional-frameworks', 'Bridge')}
-          ${LinkPanel('Room Archetypes', 'Sleep, focus, recovery, creative, and nature sanctuary patterns expressed in public-safe language.', '/room-archetypes', 'Archetypes')}
+          ${LinkPanel('Professional Frameworks', 'Client-ready environmental intelligence with clear content boundaries and no internal implementation detail.', '/professional-frameworks', 'Bridge')}
+          ${LinkPanel('Room Archetypes', 'Sleep, focus, recovery, creative, and nature sanctuary patterns expressed in environmental language.', '/room-archetypes', 'Archetypes')}
           ${LinkPanel('Implementation Guides', 'Stepwise design protocol for light, sound, air, nature, material, rhythm, and room use.', '/implementation-guides', 'Guides')}
         </div>
       </section>
       <section class="cinema-section library-section">
         <div>
           <p class="kicker">Public Environmental Intelligence Map</p>
-          <h2>Move from category language into homes, buildings, workspaces, and public-safe governance.</h2>
+          <h2>Move from category language into homes, buildings, workspaces, and environmental governance.</h2>
         </div>
         <div class="library-grid">
           ${LinkPanel('Framework Hub', 'A public map for the SANCTUM environmental intelligence category.', '/environmental-intelligence-framework', 'Hub')}
@@ -93,7 +111,7 @@ function HomePage(page: PublicPage) {
       <section class="cinema-section library-section">
         <div>
           <p class="kicker">Restoration Stories</p>
-          <h2>Public-safe stories and notes for recovery, nature, sound, and daily rhythm.</h2>
+          <h2>Environmental stories and notes for recovery, nature, sound, and daily rhythm.</h2>
         </div>
         <div class="library-grid">
           ${LinkPanel('Stories', 'Narratives about restoration, quiet rooms, nature contact, and room rhythm.', '/stories', 'Stories')}
@@ -107,9 +125,9 @@ function HomePage(page: PublicPage) {
           <h2>Public language with clear boundaries for claims, partners, and strategic readers.</h2>
         </div>
         <div class="library-grid">
-          ${LinkPanel('Public Governance Boundary', 'How SANCTUM keeps public language educational, bounded, and useful.', '/public-governance-boundary', 'Boundary')}
-          ${LinkPanel('Partner Framework', 'A public-safe bridge for aligned designers, builders, and operators.', '/partner-framework', 'Partner')}
-          ${LinkPanel('Investor Brief', 'A public category brief for environmental intelligence and SANCTUM Protocol.', '/investor-brief', 'Brief')}
+          ${LinkPanel('Environmental Governance', 'How SANCTUM keeps public language educational, bounded, and useful.', '/public-governance-boundary', 'Boundary')}
+          ${LinkPanel('Partner Framework', 'An environmental bridge for aligned designers, builders, and operators.', '/partner-framework', 'Partner')}
+          ${LinkPanel('Investor Brief', 'A category brief for environmental intelligence and SANCTUM Protocol.', '/investor-brief', 'Brief')}
         </div>
       </section>
       ${CTA('Build the public language for human spaces.', page.cta, '/environmental-intelligence', 'Explore the framework')}
@@ -130,6 +148,7 @@ function PillarPage(page: PublicPage) {
       primary: ['Explore Principles', '#principles'],
       secondary: ['Related Pillars', '#related'],
       diagram: page.diagram,
+      visual: 'environment',
     })}
     <main>
       <section id="principles" class="cinema-section split-section">
@@ -160,7 +179,7 @@ function PillarPage(page: PublicPage) {
       <section id="related" class="cinema-section">
         <div class="section-head">
           <p class="kicker">Related Pillars</p>
-          <h2>Move through the public framework.</h2>
+          <h2>Move through the research framework.</h2>
         </div>
         <div class="pillar-grid">${page.links.map((link) => LinkPanel(link.label, link.text, link.href, 'Related')).join('')}</div>
       </section>
@@ -182,6 +201,7 @@ function Hero(props: {
   primary: [string, string]
   secondary: [string, string]
   diagram: PublicPage['diagram']
+  visual: 'protocol' | 'environment'
 }) {
   return `
     <header class="public-hero">
@@ -206,7 +226,7 @@ function Hero(props: {
             <a class="secondary-link" href="${props.secondary[1]}">${props.secondary[0]}</a>
           </div>
         </div>
-        ${PublicDiagram(props.diagram, 'hero-visual')}
+        ${OriginalProtocolVisual(props.visual, 'hero-visual')}
       </div>
     </header>
   `
@@ -225,11 +245,11 @@ function ListPanel(title: string, items: string[]) {
 }
 
 export function ChecklistBlock(items: string[]) {
-  return `<section class="cinema-section">${ListPanel('Public-Safe Checklist', items)}</section>`
+  return `<section class="cinema-section">${ListPanel('Environmental Assessment Checklist', items)}</section>`
 }
 
 export function FaqBlock(items: PublicPage['faqs']) {
-  return `<section class="cinema-section faq-section"><p class="kicker">FAQ</p><h2>Questions the public framework can answer.</h2><div class="faq-list">${items.map((item) => `<details open><summary>${item.question}</summary><p>${item.answer}</p></details>`).join('')}</div></section>`
+  return `<section class="cinema-section faq-section"><p class="kicker">FAQ</p><h2>Questions the research framework can answer.</h2><div class="faq-list">${items.map((item) => `<details open><summary>${item.question}</summary><p>${item.answer}</p></details>`).join('')}</div></section>`
 }
 
 export function DisclaimerBlock() {
@@ -265,7 +285,7 @@ function DeepSeoSection(page: PublicPage) {
         <article class="knowledge-panel">
           <h3>Practical Use</h3>
           <p>Use the framework by selecting one room and one intended state. Observe what the room asks from the body and attention across a real day. Then tune the strongest visible layer: glare, noise, stale air, hard reflection, cluttered circulation, missing nature contact, or a ritual that is too difficult to repeat.</p>
-          <p>Small changes matter when they align. A better lamp, quieter edge, cleaner airflow path, softer material, clearer surface, and calmer evening rhythm can work together as a public-safe design protocol for human-centered environments.</p>
+          <p>Small changes matter when they align. A better lamp, quieter edge, cleaner airflow path, softer material, clearer surface, and calmer evening rhythm can work together as an environmental design protocol for human-centered environments.</p>
         </article>
       </div>
     </section>
@@ -283,8 +303,20 @@ function SeoArticleSection(page: PublicPage) {
         ${page.seoAudience ? `<p>Audience: ${page.seoAudience}</p>` : ''}
       </div>
       <div class="article-body">${page.seoBody.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div>
+      ${ComparisonTable(page)}
       ${page.seoDisclaimer ? `<div class="disclaimer"><strong>Disclaimer</strong><p>${page.seoDisclaimer}</p></div>` : ''}
     </section>
+  `
+}
+
+function ComparisonTable(page: PublicPage) {
+  if (!page.seoTable?.length) return ''
+
+  return `
+    <div class="comparison-table" role="table" aria-label="${page.h1} comparison table">
+      <div role="row"><strong role="columnheader">SANCTUM Lens</strong><strong role="columnheader">Conventional Lens</strong><strong role="columnheader">Difference</strong></div>
+      ${page.seoTable.map((row) => `<div role="row"><span role="cell">${row.left}</span><span role="cell">${row.right}</span><span role="cell">${row.difference}</span></div>`).join('')}
+    </div>
   `
 }
 
@@ -302,45 +334,69 @@ function CollectionItemsSection(page: PublicPage) {
   `
 }
 
-export function PublicDiagram(kind: PublicPage['diagram'], className = '') {
-  const labels = diagramLabels[kind]
+function GlossaryPage(page: PublicPage) {
+  const alphabetical = [...glossaryEntries].sort((a, b) => a.term.localeCompare(b.term))
   return `
-    <section class="diagram-wrap ${className}" aria-label="${labels.title}">
-      <div class="diagram-orbit">
-        <svg viewBox="0 0 760 520" role="img">
-          <title>${labels.title}</title>
-          <defs>
-            <linearGradient id="lineGlow" x1="0" x2="1">
-              <stop offset="0%" stop-color="#d9c7a3"></stop>
-              <stop offset="100%" stop-color="#8fb7a3"></stop>
-            </linearGradient>
-          </defs>
-          <circle class="orbit outer" cx="380" cy="260" r="214"></circle>
-          <circle class="orbit middle" cx="380" cy="260" r="142"></circle>
-          <circle class="core" cx="380" cy="260" r="76"></circle>
-          <text class="core-label" x="380" y="254">${labels.center}</text>
-          <text class="core-sub" x="380" y="278">SANCTUM</text>
-          ${labels.items.map((item, index) => {
-            const angle = (-90 + index * (360 / labels.items.length)) * (Math.PI / 180)
-            const x = 380 + Math.cos(angle) * 214
-            const y = 260 + Math.sin(angle) * 214
-            const lx = 380 + Math.cos(angle) * 138
-            const ly = 260 + Math.sin(angle) * 138
-            return `<line class="spoke" x1="${lx.toFixed(1)}" y1="${ly.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"></line><g><circle class="node-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="42"></circle><text class="node-label" x="${x.toFixed(1)}" y="${(y + 5).toFixed(1)}">${item}</text></g>`
-          }).join('')}
-        </svg>
-      </div>
-    </section>
+    ${Hero({
+      brand: 'SANCTUM Protocol',
+      eyebrow: 'Public Vocabulary',
+      title: page.h1,
+      copy: page.intro,
+      primary: ['Search Terms', '#glossary-search'],
+      secondary: ['Research Library', '/research-library'],
+      diagram: page.diagram,
+      visual: 'environment',
+    })}
+    <main>
+      <section class="cinema-section">
+        <div class="section-head">
+          <p class="kicker">Glossary Search</p>
+          <h2>Environmental intelligence vocabulary.</h2>
+        </div>
+        <input id="glossary-search" class="glossary-search" type="search" placeholder="Search environmental intelligence, recovery, rhythm, sound, light, nature..." aria-label="Search glossary" />
+        <div class="category-strip">${glossaryCategories.map((category) => `<a href="#${slugFor(category)}">${category}</a>`).join('')}</div>
+      </section>
+      <section class="cinema-section">
+        <div class="section-head">
+          <p class="kicker">Alphabetical Listing</p>
+          <h2>100 public SANCTUM terms.</h2>
+        </div>
+        <div id="glossary-list" class="glossary-grid">${alphabetical.map(GlossaryCard).join('')}</div>
+      </section>
+      <section class="cinema-section">
+        <div class="section-head">
+          <p class="kicker">Category Listing</p>
+          <h2>Topic clusters.</h2>
+        </div>
+        <div class="pillar-grid">${glossaryCategories.map((category) => LinkPanel(category, `${glossaryEntries.filter((entry) => entry.category === category).length} glossary terms linked to ${category.toLowerCase()}.`, `#${slugFor(category)}`, 'Glossary Category')).join('')}</div>
+      </section>
+      ${FaqBlock(page.faqs)}
+      ${DisclaimerBlock()}
+      ${Footer()}
+      ${Schema({ ...page, seoCollectionItems: alphabetical.map((entry) => ({ label: entry.term, href: `/glossary#${entry.slug}`, text: entry.definition })) })}
+    </main>
   `
 }
 
-const diagramLabels = {
-  'environmental-layers': { title: 'Environmental Intelligence Layers', center: 'Environment', items: ['Physical', 'Sensory', 'Cognitive', 'Recovery', 'Nature', 'Rhythm'] },
-  'sleep-factors': { title: 'Sleep Environment Factors', center: 'Sleep', items: ['Dark', 'Quiet', 'Cool', 'Air', 'Soft', 'Ritual'] },
-  'recovery-framework': { title: 'Recovery Space Framework', center: 'Recovery', items: ['Privacy', 'Low Light', 'Texture', 'Breath', 'Quiet', 'Return'] },
-  'healthy-home': { title: 'Healthy Home Framework', center: 'Home', items: ['Bedroom', 'Work', 'Kitchen', 'Entry', 'Bath', 'Outdoor'] },
-  'nature-ladder': { title: 'Nature Exposure Ladder', center: 'Nature', items: ['View', 'Plant', 'Air', 'Material', 'Garden', 'Trail'] },
-  'sound-field': { title: 'Sound And Vibration Field', center: 'Sound', items: ['Quiet', 'Masking', 'Absorb', 'Privacy', 'Hum', 'Resonance'] },
+function GlossaryCard(entry: (typeof glossaryEntries)[number]) {
+  return `
+    <article id="${entry.slug}" class="surface-card glossary-card" data-term="${entry.term.toLowerCase()}" data-category="${entry.category.toLowerCase()}">
+      <span>${entry.category}</span>
+      <h3>${entry.term}</h3>
+      <p>${entry.definition}</p>
+      <p><strong>Why it matters:</strong> ${entry.whyItMatters}</p>
+      <div class="mini-link-row">${entry.relatedConcepts.map((term) => `<a href="/glossary#${slugFor(term)}">${term}</a>`).join('')}</div>
+      <div class="mini-link-row">${entry.relatedPages.map((href) => `<a href="${href}">${href.replace('/', '') || 'home'}</a>`).join('')}</div>
+    </article>
+  `
+}
+
+function slugFor(text: string) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
+export function PublicDiagram(kind: PublicPage['diagram'], className = '') {
+  return OriginalProtocolVisual(kind === 'environmental-layers' ? 'environment' : 'protocol', className)
 }
 
 function Schema(page: PublicPage) {
