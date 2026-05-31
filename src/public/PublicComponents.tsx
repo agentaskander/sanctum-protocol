@@ -30,7 +30,7 @@ export function BindPublicInteractions() {
   search.addEventListener('input', () => {
     const query = search.value.trim().toLowerCase()
     cards.forEach((card) => {
-      const haystack = `${card.dataset.term ?? ''} ${card.dataset.category ?? ''} ${card.textContent ?? ''}`.toLowerCase()
+      const haystack = `${card.getAttribute('data-term') ?? ''} ${card.getAttribute('data-category') ?? ''} ${card.textContent ?? ''}`.toLowerCase()
       card.hidden = query.length > 0 && !haystack.includes(query)
     })
   })
