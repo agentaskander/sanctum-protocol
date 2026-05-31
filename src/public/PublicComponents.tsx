@@ -1,6 +1,8 @@
 import { frameworkLayers, pillars, type PublicPage } from './siteContent'
 import { OriginalProtocolVisual } from './originalVisuals'
 import { glossaryCategories, glossaryEntries } from './glossaryLibrary'
+import { authorityRecords, comparisonRecords, partnerRecords, researchRecords, storyRecords } from './authorityLibrary'
+import { seoEntries } from './seoLibrary'
 
 export function SeoHead(page: PublicPage) {
   document.title = page.title
@@ -130,6 +132,58 @@ function HomePage(page: PublicPage) {
           ${LinkPanel('Investor Brief', 'A category brief for environmental intelligence and SANCTUM Protocol.', '/investor-brief', 'Brief')}
         </div>
       </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Authority Hub Grid</p>
+          <h2>Start with the major environmental intelligence hubs.</h2>
+        </div>
+        <div class="dense-link-grid">${authorityRecords.slice(0, 12).map((item) => LinkPanel(item.title, item.description, `/${item.slug}`, 'Authority Hub')).join('')}</div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Research Note Grid</p>
+          <h2>Questions readers search before they trust the category.</h2>
+        </div>
+        <div class="dense-link-grid">${researchRecords.slice(0, 12).map((item) => LinkPanel(item.title, item.description, `/research-library/${item.slug}`, 'Research Note')).join('')}</div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Glossary Preview</p>
+          <h2>Definitions that make the framework easier to navigate.</h2>
+        </div>
+        <div class="dense-link-grid">${glossaryEntries.slice(0, 12).map((entry) => LinkPanel(entry.term, entry.definition, `/glossary#${entry.slug}`, entry.category)).join('')}</div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Story Library Preview</p>
+          <h2>Case-style narratives for rooms, buildings, and daily rhythm.</h2>
+        </div>
+        <div class="dense-link-grid">${storyRecords.slice(0, 9).map((item) => LinkPanel(item.title, item.description, `/stories/${item.slug}`, 'Story')).join('')}</div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Comparison Pages Preview</p>
+          <h2>Search-language comparisons that explain what SANCTUM is not.</h2>
+        </div>
+        <div class="dense-link-grid">${comparisonRecords.slice(0, 9).map((item) => LinkPanel(item.title, item.description, `/comparisons/${item.slug}`, 'Comparison')).join('')}</div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Partner Pathways</p>
+          <h2>Entry points for professional and strategic audiences.</h2>
+        </div>
+        <div class="dense-link-grid">${partnerRecords.slice(0, 10).map((item) => LinkPanel(item.title, item.description, `/partners/${item.slug}`, 'Partner Pathway')).join('')}</div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Field Guides And Briefs</p>
+          <h2>Practical reading paths for applying environmental intelligence.</h2>
+        </div>
+        <div class="dense-link-grid">
+          ${seoEntries.filter((entry) => entry.collection === 'field-guides' || entry.collection === 'briefs').slice(0, 12).map((entry) => LinkPanel(entry.title, entry.description, `/articles/${entry.slug}`, entry.collection === 'briefs' ? 'Brief' : 'Field Guide')).join('')}
+          ${LinkPanel('Investor Brief', 'A category brief for environmental intelligence, market timing, public boundaries, Studio, Protocol, and moat language.', '/investor-brief', 'Investor Brief')}
+        </div>
+      </section>
       ${CTA('Build the public language for human spaces.', page.cta, '/environmental-intelligence', 'Explore the framework')}
       ${DisclaimerBlock()}
       ${Footer()}
@@ -151,6 +205,7 @@ function PillarPage(page: PublicPage) {
       visual: 'environment',
     })}
     <main>
+      ${page.seoCollectionItems?.length ? CollectionItemsSection(page) : ''}
       <section id="principles" class="cinema-section split-section">
         <div>
           <p class="kicker">Design Protocol</p>
@@ -174,7 +229,7 @@ function PillarPage(page: PublicPage) {
       </section>
       ${DeepSeoSection(page)}
       ${SeoArticleSection(page)}
-      ${CollectionItemsSection(page)}
+      ${page.seoCollectionItems?.length ? '' : CollectionItemsSection(page)}
       ${ChecklistBlock(page.checklist)}
       <section id="related" class="cinema-section">
         <div class="section-head">
@@ -249,7 +304,7 @@ export function ChecklistBlock(items: string[]) {
 }
 
 export function FaqBlock(items: PublicPage['faqs']) {
-  return `<section class="cinema-section faq-section"><p class="kicker">FAQ</p><h2>Questions the research framework can answer.</h2><div class="faq-list">${items.map((item) => `<details open><summary>${item.question}</summary><p>${item.answer}</p></details>`).join('')}</div></section>`
+  return `<section class="cinema-section faq-section"><p class="kicker">FAQ</p><h2>Questions the research framework can answer.</h2><div class="faq-list">${items.map((item) => `<details open><summary>${item.question}</summary><p>${item.answer}</p><p>Why it matters: the answer helps readers translate a broad environmental idea into a room, building, or daily rhythm decision they can actually observe.</p><p>Practical example: start with one visible condition such as glare, sound reflection, stale air, visual load, missing nature contact, or a difficult transition before adding new objects.</p><p>Related reading: continue through the <a href="/glossary">glossary</a>, <a href="/research-library">research library</a>, and <a href="/stories">story library</a> for connected SANCTUM language.</p></details>`).join('')}</div></section>`
 }
 
 export function DisclaimerBlock() {
