@@ -4,6 +4,14 @@ export function SeoHead(page: PublicPage) {
   document.title = page.title
   setMeta('description', page.description)
   setMeta('robots', 'index,follow')
+  setMeta('twitter:card', 'summary_large_image')
+  setMeta('twitter:title', page.title)
+  setMeta('twitter:description', page.description)
+  setMetaProperty('og:type', page.path === '/' ? 'website' : 'article')
+  setMetaProperty('og:site_name', 'SANCTUM Protocol')
+  setMetaProperty('og:title', page.title)
+  setMetaProperty('og:description', page.description)
+  setMetaProperty('og:url', page.canonical)
   setLink('canonical', page.canonical)
 }
 
@@ -100,6 +108,7 @@ function PillarPage(page: PublicPage) {
         ${ListPanel('What To Observe', page.observe)}
         ${ListPanel('What To Tune', page.tune)}
       </section>
+      ${DeepSeoSection(page)}
       ${ChecklistBlock(page.checklist)}
       <section id="related" class="cinema-section">
         <div class="section-head">
@@ -184,7 +193,35 @@ function CTA(title: string, text: string, href: string, label: string) {
 }
 
 function Footer() {
-  return '<footer class="footer"><div><strong>SANCTUM Protocol</strong><span>Public framework for environmental intelligence.</span></div><a href="https://sanctumstudio.com">SANCTUM Studio is the design implementation layer.</a></footer>'
+  return '<footer class="footer"><div><strong>SANCTUM Protocol</strong><span>Public framework for environmental intelligence.</span></div><a href="https://sanctumstudio.io">SANCTUM Studio is the design implementation layer.</a></footer>'
+}
+
+function DeepSeoSection(page: PublicPage) {
+  return `
+    <section class="cinema-section knowledge-section">
+      <div class="section-head">
+        <p class="kicker">Definition And Context</p>
+        <h2>${page.h1} inside the larger environmental intelligence framework.</h2>
+      </div>
+      <div class="knowledge-grid">
+        <article class="knowledge-panel">
+          <h3>What It Means</h3>
+          <p>${page.h1} describes a public way to read human spaces through sensory architecture and room rhythm. Instead of treating a room as decoration or equipment, SANCTUM Protocol studies how light, sound, air, material, nature, recovery cues, and behavioral timing combine into an ambient system.</p>
+          <p>The aim is category clarity. A bedroom, studio, office, clinic, or home can be discussed in terms of what it does to attention, rest, downshift, comfort, and orientation. This keeps the language useful for designers and researchers while staying away from private systems and medical claims.</p>
+        </article>
+        <article class="knowledge-panel">
+          <h3>How It Differs From Conventional Design</h3>
+          <p>Conventional design often begins with style, finish, furniture, or square footage. Environmental intelligence begins with human state. It asks whether the room supports sleep, focus, recovery, calm, or social presence, then studies the environmental layers that make that state easier or harder to sustain.</p>
+          <p>This does not reject beauty. It makes beauty operational: quieter transitions, better light timing, more breathable space, living reference points, lower sensory friction, and a stronger connection between spatial intention and daily use.</p>
+        </article>
+        <article class="knowledge-panel">
+          <h3>Practical Use</h3>
+          <p>Use the framework by selecting one room and one intended state. Observe what the room asks from the body and attention across a real day. Then tune the strongest visible layer: glare, noise, stale air, hard reflection, cluttered circulation, missing nature contact, or a ritual that is too difficult to repeat.</p>
+          <p>Small changes matter when they align. A better lamp, quieter edge, cleaner airflow path, softer material, clearer surface, and calmer evening rhythm can work together as a public-safe design protocol for human-centered environments.</p>
+        </article>
+      </div>
+    </section>
+  `
 }
 
 export function PublicDiagram(kind: PublicPage['diagram'], className = '') {
@@ -248,6 +285,16 @@ function setMeta(name: string, content: string) {
   if (!tag) {
     tag = document.createElement('meta')
     tag.name = name
+    document.head.appendChild(tag)
+  }
+  tag.content = content
+}
+
+function setMetaProperty(property: string, content: string) {
+  let tag = document.querySelector<HTMLMetaElement>(`meta[property="${property}"]`)
+  if (!tag) {
+    tag = document.createElement('meta')
+    tag.setAttribute('property', property)
     document.head.appendChild(tag)
   }
   tag.content = content
