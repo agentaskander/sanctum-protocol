@@ -78,6 +78,40 @@ function HomePage(page: PublicPage) {
           ${LinkPanel('Implementation Guides', 'Stepwise design protocol for light, sound, air, nature, material, rhythm, and room use.', '/implementation-guides', 'Guides')}
         </div>
       </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Public Environmental Intelligence Map</p>
+          <h2>Move from category language into homes, buildings, workspaces, and public-safe governance.</h2>
+        </div>
+        <div class="library-grid">
+          ${LinkPanel('Framework Hub', 'A public map for the SANCTUM environmental intelligence category.', '/environmental-intelligence-framework', 'Hub')}
+          ${LinkPanel('Homes', 'Environmental intelligence for homes, rooms, thresholds, and daily rhythm.', '/environmental-intelligence-for-homes', 'Hub')}
+          ${LinkPanel('Buildings', 'Public language for buildings, shared spaces, and operations.', '/environmental-intelligence-for-buildings', 'Hub')}
+          ${LinkPanel('Workspaces', 'Focus, quiet, air, light, and reset as workplace environment language.', '/environmental-intelligence-for-workspaces', 'Hub')}
+        </div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Restoration Stories</p>
+          <h2>Public-safe stories and notes for recovery, nature, sound, and daily rhythm.</h2>
+        </div>
+        <div class="library-grid">
+          ${LinkPanel('Stories', 'Narratives about restoration, quiet rooms, nature contact, and room rhythm.', '/stories', 'Stories')}
+          ${LinkPanel('Research Library', 'Public research notes across light, sound, recovery, and nature.', '/research-library', 'Research')}
+          ${LinkPanel('Field Guides', 'Practical guides for applying environmental intelligence one room at a time.', '/field-guides', 'Guides')}
+        </div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Governance Boundary</p>
+          <h2>Public language with clear boundaries for claims, partners, and strategic readers.</h2>
+        </div>
+        <div class="library-grid">
+          ${LinkPanel('Public Governance Boundary', 'How SANCTUM keeps public language educational, bounded, and useful.', '/public-governance-boundary', 'Boundary')}
+          ${LinkPanel('Partner Framework', 'A public-safe bridge for aligned designers, builders, and operators.', '/partner-framework', 'Partner')}
+          ${LinkPanel('Investor Brief', 'A public category brief for environmental intelligence and SANCTUM Protocol.', '/investor-brief', 'Brief')}
+        </div>
+      </section>
       ${CTA('Build the public language for human spaces.', page.cta, '/environmental-intelligence', 'Explore the framework')}
       ${DisclaimerBlock()}
       ${Footer()}
@@ -121,6 +155,7 @@ function PillarPage(page: PublicPage) {
       </section>
       ${DeepSeoSection(page)}
       ${SeoArticleSection(page)}
+      ${CollectionItemsSection(page)}
       ${ChecklistBlock(page.checklist)}
       <section id="related" class="cinema-section">
         <div class="section-head">
@@ -253,6 +288,20 @@ function SeoArticleSection(page: PublicPage) {
   `
 }
 
+function CollectionItemsSection(page: PublicPage) {
+  if (!page.seoCollectionItems?.length) return ''
+
+  return `
+    <section class="cinema-section">
+      <div class="section-head">
+        <p class="kicker">Collection Index</p>
+        <h2>${page.h1} entries.</h2>
+      </div>
+      <div class="pillar-grid">${page.seoCollectionItems.map((item) => LinkPanel(item.label, item.text, item.href, 'Library Entry')).join('')}</div>
+    </section>
+  `
+}
+
 export function PublicDiagram(kind: PublicPage['diagram'], className = '') {
   const labels = diagramLabels[kind]
   return `
@@ -304,6 +353,10 @@ function Schema(page: PublicPage) {
       { '@type': 'Article', headline: page.h1, description: page.description, dateModified: '2026-05-31' },
       { '@type': 'FAQPage', mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
       { '@type': 'HowTo', name: `Review ${page.h1}`, step: page.checklist.map((item) => ({ '@type': 'HowToStep', text: item })) },
+      ...(page.seoCollectionItems ? [
+        { '@type': 'CollectionPage', name: page.h1, description: page.description, url: page.canonical },
+        { '@type': 'ItemList', name: `${page.h1} entries`, itemListElement: page.seoCollectionItems.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.label, url: `${page.canonical.replace(/\/[^/]*$/, '')}${item.href}` })) },
+      ] : []),
     ],
   }
   return `<script type="application/ld+json">${JSON.stringify(json)}</script>`
