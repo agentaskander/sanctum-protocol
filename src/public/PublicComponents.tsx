@@ -67,6 +67,17 @@ function HomePage(page: PublicPage) {
           ${LinkPanel('Healthy Home Framework', 'A whole-home view of sleep, focus, recovery, air, light, sound, nature, and behavioral rhythm.', '/healthy-home-framework', 'Framework')}
         </div>
       </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Professional Layer</p>
+          <h2>The bridge from public category language to implementation.</h2>
+        </div>
+        <div class="library-grid">
+          ${LinkPanel('Professional Frameworks', 'Client-ready environmental intelligence with clear public boundaries and no internal implementation detail.', '/professional-frameworks', 'Bridge')}
+          ${LinkPanel('Room Archetypes', 'Sleep, focus, recovery, creative, and nature sanctuary patterns expressed in public-safe language.', '/room-archetypes', 'Archetypes')}
+          ${LinkPanel('Implementation Guides', 'Stepwise design protocol for light, sound, air, nature, material, rhythm, and room use.', '/implementation-guides', 'Guides')}
+        </div>
+      </section>
       ${CTA('Build the public language for human spaces.', page.cta, '/environmental-intelligence', 'Explore the framework')}
       ${DisclaimerBlock()}
       ${Footer()}
@@ -143,6 +154,7 @@ function Hero(props: {
         <div>
           <a href="/environmental-intelligence">Framework</a>
           <a href="/sleep-environments">Pillars</a>
+          <a href="/professional-frameworks">Professional</a>
           <a href="/research">Research</a>
           <a href="/glossary">Glossary</a>
           <a href="/about">About</a>
