@@ -153,10 +153,10 @@ function longBody(title: string, category: string, kind: AuthorityRecord['kind']
   return sections.flatMap((section, index) => [
     `${section}: ${title} gives SANCTUM Protocol a public way to discuss ${category.toLowerCase()} through visible environmental conditions rather than hidden machinery. The page reads light, sound, air, material, nature, rhythm, spatial clarity, and daily use as a connected field that shapes how a room is experienced.`,
     `For public readers, the useful move is to begin with the intended human state and then observe the room. A space may need sleep protection, focus continuity, recovery softness, nature contact, social ease, or a clearer transition from one part of the day to another. ${title} keeps that reading practical, non-medical, and grounded in the built environment.`,
-    `The authority value is cumulative. This ${kind} page links glossary language, research notes, partner pages, and story examples so the topic functions as part of a larger knowledge cluster. It does not publish private ontology, hidden evaluation, internal maps, implementation workflows, or private operational references.`,
+    `The authority value is cumulative. This ${kind} page links glossary language, research notes, partner pages, and story examples so the topic functions as part of a larger knowledge cluster. It does not publish protected ontology detail, hidden evaluation, system maps, implementation workflows, or operational references.`,
     index % 2 === 0
       ? `The design lens is intentionally plain: reduce friction before adding complexity. Glare, noise, stale air, hard reflection, confusing circulation, object density, missing nature cues, and difficult rituals can all make a room work against its purpose. Public SANCTUM language names those conditions so teams can discuss them without overclaiming.`
-      : `The framework also supports professional translation. Architects, designers, builders, operators, researchers, and investors can use the page to understand the category while keeping the moat intact: public concepts outside, private systems inside, and clear boundaries around claims.`,
+      : `The framework also supports professional translation. Architects, designers, builders, operators, researchers, and investors can use the page to understand the category while keeping category authority separate from implementation systems and clear boundaries around claims.`,
   ])
 }
 
@@ -174,7 +174,7 @@ function checklist(title: string) {
 function faq(title: string) {
   return [
     { question: `What is ${title}?`, answer: `${title} is part of the SANCTUM Protocol public authority library for environmental intelligence and human-centered spaces.` },
-    { question: 'Does this expose private SANCTUM systems?', answer: 'No. It uses category language and avoids private ontology and internal evaluation, internal maps, and implementation workflows.' },
+    { question: 'Does this expose SANCTUM implementation details?', answer: 'No. It uses category language and avoids protected ontology detail, evaluation machinery, system maps, and implementation workflows.' },
     { question: 'Is this medical advice?', answer: 'No. It is educational design guidance for understanding environmental conditions.' },
     { question: 'How should teams use it?', answer: 'Use it as a vocabulary, briefing, research, and linking page for environmental intelligence conversations.' },
   ]
@@ -197,7 +197,7 @@ function record(title: string, index: number, kind: AuthorityRecord['kind'], pat
     table: pathPrefix === '/comparisons' ? [
       { left: title.split(' vs ')[0] || 'Environmental intelligence', right: title.split(' vs ')[1] || 'Conventional approach', difference: 'SANCTUM begins with human state, visible conditions, and environmental language.' },
       { left: 'Room rhythm, light, sound, air, material, and nature', right: 'Technology, style, or program treated in isolation', difference: 'The SANCTUM view connects layers into a coherent human-centered environment.' },
-      { left: 'Educational category framework', right: 'Narrow product or marketing claim', difference: 'The research framework supports authority without exposing private systems.' },
+      { left: 'Educational category framework', right: 'Narrow product or marketing claim', difference: 'The research framework supports authority without exposing implementation systems.' },
     ] : undefined,
   }
 }
@@ -261,17 +261,17 @@ export const investorBriefPage: PublicPage = {
     ...record('Investor Brief', 68, 'partner'),
     slug: 'investor-brief',
     title: 'Investor Brief',
-    description: 'A public investor brief for SANCTUM Protocol, category creation, Studio, Protocol, content boundaries, market timing, and moat language.',
+    description: 'An investor brief for SANCTUM Protocol, category creation, Studio, Protocol, content boundaries, and market timing.',
     body: [
       'Market: SANCTUM Protocol defines environmental intelligence as a public category for human-centered spaces. The market opportunity sits between architecture, wellness, healthy homes, hospitality, workplace design, and research-backed environmental language.',
       'Category Creation: The category is not framed as a device, a decor trend, or a single wellness claim. It is a language layer for rooms, buildings, and daily rhythm: light, sound, air, material, nature, spatial clarity, and recovery cues organized around human state.',
       'Environmental Intelligence: SANCTUM uses public language to help readers understand what environments repeatedly ask of people. That includes sleep protection, focus support, downshift, nature contact, acoustic privacy, breathable space, and room rhythm.',
       'Why Now: Homes, workplaces, hotels, and wellness spaces are all being asked to support more human functions with fewer clear frameworks. Environmental intelligence gives these audiences a shared vocabulary that is broader than smart buildings and more precise than lifestyle wellness.',
-      'Future Roadmap: The public roadmap is content authority, glossary depth, research-note coverage, partner pages, stories, and professional category education. Private implementation remains separate from public explanation.',
-      'Studio: SANCTUM Studio is the design implementation layer. Public Studio pages can explain room archetypes, stories, guides, and partner previews without exposing internal tooling or private ontology.',
+      'Future Roadmap: The roadmap is content authority, glossary depth, research-note coverage, partner pages, stories, and professional category education. Implementation remains separate from public explanation.',
+      'Studio: SANCTUM Studio is the design implementation layer. Studio pages can explain room archetypes, stories, guides, and partner previews without exposing protected tooling or ontology detail.',
       'Protocol: SANCTUM Protocol is the public framework layer. It builds authority around environmental intelligence, restoration environments, sensory architecture, room rhythm, and human-centered buildings.',
-      'Content Boundaries: Public pages stay educational and bounded. They do not publish private ontology, internal evaluation methods, internal maps, private operational links, prompt material, or operational workflows.',
-      'Moat Explanation: The moat is the separation between public category authority and private implementation systems. The public layer builds language, trust, and discoverability; the private layer preserves canonical ontology and operating depth.',
+      'Content Boundaries: Public pages stay educational and bounded. They do not publish protected ontology detail, evaluation methods, system maps, operational links, prompt material, or operational workflows.',
+      'Category Depth: SANCTUM separates public category authority from protected implementation systems. The public layer builds language, trust, and discoverability; the protected layer preserves canonical framework and operating depth.',
       ...longBody('Investor Brief', 'Partner Framework', 'partner'),
     ],
   }, '/investor-brief'),
@@ -285,9 +285,9 @@ export const authorityCollectionPages: PublicPage[] = collections.map((collectio
   h1: collection.title,
   intro: `A public authority collection for ${collection.title.toLowerCase()} across environmental intelligence, research, stories, comparisons, and partner language.`,
   label: 'Authority Collection',
-  principle: `This collection builds public depth while preserving the private SANCTUM moat.`,
+  principle: `This collection builds public depth while preserving protected SANCTUM implementation depth.`,
   observe: ['Topic cluster coverage', 'Public glossary language', 'Research and partner relevance'],
-  tune: ['Use internal links deliberately', 'Keep claims bounded', 'Preserve private implementation boundaries'],
+  tune: ['Use related links deliberately', 'Keep claims bounded', 'Preserve implementation boundaries'],
   checklist: checklist(collection.title),
   faqs: faq(collection.title),
   links: collection.records.slice(0, 12).map((item) => ({ label: item.title, href: `${collection.path}/${item.slug}`, text: item.description })),

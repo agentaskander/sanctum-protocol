@@ -1,6 +1,6 @@
 import { frameworkLayers, pillars, type PublicPage } from './siteContent'
 import { OriginalProtocolVisual } from './originalVisuals'
-import { glossaryCategories, glossaryEntries } from './glossaryLibrary'
+import { glossaryEntries } from './glossaryLibrary'
 import { authorityRecords, comparisonRecords, partnerRecords, researchRecords, storyRecords } from './authorityLibrary'
 import { seoEntries } from './seoLibrary'
 
@@ -32,26 +32,36 @@ export function BindPublicInteractions() {
   const empty = document.getElementById('glossary-empty')
   if (!search || !cards.length) return
 
-  const params = new URLSearchParams(window.location.search)
-  let activeCategory = params.get('category') ?? ''
-  search.value = params.get('q') ?? ''
+  const normalizeFilterValue = (value: string) => value.toLowerCase().trim().replace(/\s+/g, ' ')
+  const readParams = () => {
+    const params = new URLSearchParams(window.location.search)
+    return {
+      category: normalizeFilterValue(params.get('category') ?? ''),
+      query: params.get('q') ?? '',
+    }
+  }
 
-  const applyFilter = () => {
-    const query = search.value.trim().toLowerCase()
+  let { category: activeCategory, query: initialQuery } = readParams()
+  search.value = initialQuery
+
+  const applyFilter = (syncUrl = true) => {
+    const rawQuery = search.value.trim()
+    const query = normalizeFilterValue(rawQuery)
     let visible = 0
 
     cards.forEach((card) => {
-      const category = card.getAttribute('data-category-label') ?? ''
+      const category = normalizeFilterValue(card.getAttribute('data-category-label') ?? '')
       const haystack = card.getAttribute('data-search') ?? card.textContent ?? ''
-      const matchesQuery = !query || haystack.toLowerCase().includes(query)
+      const matchesQuery = !query || normalizeFilterValue(haystack).includes(query)
       const matchesCategory = !activeCategory || category === activeCategory
       const isVisible = matchesQuery && matchesCategory
       card.hidden = !isVisible
+      card.classList.toggle('is-hidden', !isVisible)
       if (isVisible) visible += 1
     })
 
     categoryButtons.forEach((button) => {
-      const category = button.getAttribute('data-glossary-category') ?? ''
+      const category = normalizeFilterValue(button.getAttribute('data-glossary-category') ?? '')
       button.classList.toggle('is-active', category === activeCategory)
       button.setAttribute('aria-pressed', String(category === activeCategory))
     })
@@ -59,21 +69,33 @@ export function BindPublicInteractions() {
     if (count) count.textContent = `Showing ${visible} of ${cards.length} terms`
     if (empty) empty.hidden = visible !== 0
 
+    if (!syncUrl) return
+
     const next = new URLSearchParams()
-    if (search.value.trim()) next.set('q', search.value.trim())
-    if (activeCategory) next.set('category', activeCategory)
+    if (rawQuery) next.set('q', rawQuery)
+    if (activeCategory) {
+      const label = categoryButtons.find((button) => normalizeFilterValue(button.getAttribute('data-glossary-category') ?? '') === activeCategory)?.getAttribute('data-glossary-category') ?? ''
+      if (label) next.set('category', label)
+    }
     const queryString = next.toString()
     const nextUrl = `${window.location.pathname}${queryString ? `?${queryString}` : ''}`
     window.history.replaceState(null, '', nextUrl)
   }
 
-  search.addEventListener('input', applyFilter)
+  search.addEventListener('input', () => applyFilter())
   categoryButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      const category = button.getAttribute('data-glossary-category') ?? ''
+      const category = normalizeFilterValue(button.getAttribute('data-glossary-category') ?? '')
       activeCategory = activeCategory === category ? '' : category
       applyFilter()
     })
+  })
+
+  window.addEventListener('popstate', () => {
+    const next = readParams()
+    activeCategory = next.category
+    search.value = next.query
+    applyFilter(false)
   })
 
   applyFilter()
@@ -99,7 +121,7 @@ function HomePage(page: PublicPage) {
         </div>
         <div class="large-copy">
           <p>Light changes alertness. Sound changes vigilance. Air changes comfort before language can name it. Nature changes orientation. Material changes touch and thermal feeling. Rhythm changes when a room asks the body to rise, focus, downshift, or recover.</p>
-          <p>Environmental intelligence gives those forces a research framework. It turns rooms into legible human-centered environments without exposing private systems or hidden evaluation machinery.</p>
+          <p>Environmental intelligence gives those forces a research framework. It turns rooms into legible human-centered environments without exposing implementation details or hidden evaluation machinery.</p>
         </div>
       </section>
       <section class="cinema-section">
@@ -134,7 +156,7 @@ function HomePage(page: PublicPage) {
           <h2>The bridge from category language to implementation.</h2>
         </div>
         <div class="library-grid">
-          ${LinkPanel('Professional Frameworks', 'Client-ready environmental intelligence with clear content boundaries and no internal implementation detail.', '/professional-frameworks', 'Bridge')}
+          ${LinkPanel('Professional Frameworks', 'Client-ready environmental intelligence with clear content boundaries and no protected implementation detail.', '/professional-frameworks', 'Bridge')}
           ${LinkPanel('Room Archetypes', 'Sleep, focus, recovery, creative, and nature sanctuary patterns expressed in environmental language.', '/room-archetypes', 'Archetypes')}
           ${LinkPanel('Implementation Guides', 'Stepwise design protocol for light, sound, air, nature, material, rhythm, and room use.', '/implementation-guides', 'Guides')}
         </div>
@@ -222,7 +244,7 @@ function HomePage(page: PublicPage) {
         </div>
         <div class="dense-link-grid">
           ${seoEntries.filter((entry) => entry.collection === 'field-guides' || entry.collection === 'briefs').slice(0, 12).map((entry) => LinkPanel(entry.title, entry.description, `/articles/${entry.slug}`, entry.collection === 'briefs' ? 'Brief' : 'Field Guide')).join('')}
-          ${LinkPanel('Investor Brief', 'A category brief for environmental intelligence, market timing, public boundaries, Studio, Protocol, and moat language.', '/investor-brief', 'Investor Brief')}
+          ${LinkPanel('Investor Brief', 'A category brief for environmental intelligence, market timing, governance and safety framework, Studio, and Protocol language.', '/investor-brief', 'Investor Brief')}
         </div>
       </section>
       ${CTA('Build the public language for human spaces.', page.cta, '/environmental-intelligence', 'Explore the framework')}
@@ -371,7 +393,7 @@ function DeepSeoSection(page: PublicPage) {
         <article class="knowledge-panel">
           <h3>What It Means</h3>
           <p>${page.h1} describes a public way to read human spaces through sensory architecture and room rhythm. Instead of treating a room as decoration or equipment, SANCTUM Protocol studies how light, sound, air, material, nature, recovery cues, and behavioral timing combine into an ambient system.</p>
-          <p>The aim is category clarity. A bedroom, studio, office, clinic, or home can be discussed in terms of what it does to attention, rest, downshift, comfort, and orientation. This keeps the language useful for designers and researchers while staying away from private systems and medical claims.</p>
+          <p>The aim is category clarity. A bedroom, studio, office, clinic, or home can be discussed in terms of what it does to attention, rest, downshift, comfort, and orientation. This keeps the language useful for designers and researchers while staying away from implementation details and medical claims.</p>
         </article>
         <article class="knowledge-panel">
           <h3>How It Differs From Conventional Design</h3>
@@ -432,6 +454,7 @@ function CollectionItemsSection(page: PublicPage) {
 
 function GlossaryPage(page: PublicPage) {
   const alphabetical = [...glossaryEntries].sort((a, b) => a.term.localeCompare(b.term))
+  const categories = Array.from(new Set(alphabetical.map((entry) => entry.category))).sort((a, b) => a.localeCompare(b))
   return `
     ${Hero({
       brand: 'SANCTUM Protocol',
@@ -452,7 +475,7 @@ function GlossaryPage(page: PublicPage) {
         <input id="glossary-search" class="glossary-search" type="search" placeholder="Search environmental intelligence, recovery, rhythm, sound, light, nature..." aria-label="Search glossary" />
         <div class="category-strip" role="group" aria-label="Filter glossary categories">
           <button type="button" class="is-active" data-glossary-category="" aria-pressed="true">All</button>
-          ${glossaryCategories.map((category) => `<button type="button" data-glossary-category="${category}" aria-pressed="false">${category}</button>`).join('')}
+          ${categories.map((category) => `<button type="button" data-glossary-category="${category}" aria-pressed="false">${category}</button>`).join('')}
         </div>
         <p id="glossary-count" class="glossary-count">Showing ${alphabetical.length} of ${alphabetical.length} terms</p>
       </section>
@@ -469,7 +492,7 @@ function GlossaryPage(page: PublicPage) {
           <p class="kicker">Category Listing</p>
           <h2>Topic clusters.</h2>
         </div>
-        <div class="pillar-grid">${glossaryCategories.map((category) => LinkPanel(category, `${glossaryEntries.filter((entry) => entry.category === category).length} glossary terms linked to ${category.toLowerCase()}.`, `#${slugFor(category)}`, 'Glossary Category')).join('')}</div>
+        <div class="pillar-grid">${categories.map((category) => LinkPanel(category, `${glossaryEntries.filter((entry) => entry.category === category).length} glossary terms linked to ${category.toLowerCase()}.`, `#${slugFor(category)}`, 'Glossary Category')).join('')}</div>
       </section>
       ${FaqBlock(page.faqs)}
       ${DisclaimerBlock()}
@@ -480,7 +503,7 @@ function GlossaryPage(page: PublicPage) {
 }
 
 function GlossaryCard(entry: (typeof glossaryEntries)[number]) {
-  const searchText = [entry.term, entry.definition, entry.category, entry.whyItMatters, ...entry.relatedConcepts, ...entry.relatedPages].join(' ').toLowerCase()
+  const searchText = [entry.term, entry.slug, entry.definition, entry.category, entry.whyItMatters, ...entry.relatedConcepts, ...entry.relatedPages].join(' ').toLowerCase()
   return `
     <article id="${entry.slug}" class="surface-card glossary-card" data-term="${entry.term.toLowerCase()}" data-category="${entry.category.toLowerCase()}" data-category-label="${entry.category}" data-search="${searchText}">
       <span>${entry.category}</span>

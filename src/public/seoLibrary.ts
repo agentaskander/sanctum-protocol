@@ -45,7 +45,7 @@ const hubDefinitions = [
 
 function bodyFor(title: string, category: string, audience: string) {
   return [
-    `${title} sits inside SANCTUM Protocol's environmental intelligence library. It gives ${audience.toLowerCase()} a clear way to discuss rooms, buildings, and outdoor edges without exposing private systems or overstating design claims.`,
+    `${title} sits inside SANCTUM Protocol's environmental intelligence library. It gives ${audience.toLowerCase()} a clear way to discuss rooms, buildings, and outdoor edges without exposing implementation details or overstating design claims.`,
     `The core question is simple: what does the environment repeatedly ask of the person using it? Light can sharpen or scatter attention. Sound can settle or activate vigilance. Air, material, nature, and rhythm can either support a room purpose or compete with it.`,
     `${category} pages use environmental vocabulary only. They describe visible conditions, design choices, maintenance habits, and everyday experience. They do not publish hidden methods, formulas, or operational instructions.`,
     `A useful reading starts with one place and one intended state. The room might need sleep protection, focus clarity, recovery softness, social ease, or nature contact. Naming that state makes the environmental layers easier to organize.`,
@@ -68,7 +68,7 @@ function checklistFor(category: string) {
 function faqFor(title: string) {
   return [
     { question: `What is ${title}?`, answer: `${title} is a public SANCTUM Protocol article for understanding human-centered environments through visible design conditions.` },
-    { question: 'Is this environmental?', answer: 'Yes. The page uses research framework language and does not include private methods or operational instructions.' },
+    { question: 'Is this environmental?', answer: 'Yes. The page uses research framework language and does not include implementation methods or operational instructions.' },
     { question: 'Is this medical guidance?', answer: 'No. It is educational design language only.' },
     { question: 'How should readers use it?', answer: 'Use it to frame a room observation, design brief, research discussion, or public-facing guide.' },
   ]
@@ -191,7 +191,7 @@ export const hubRoutes: PublicPage[] = hubDefinitions.map(([slug, title, descrip
   h1: title,
   intro: description,
   label: category,
-  principle: `${title} organizes public SANCTUM language for ${category.toLowerCase()} without exposing private systems or hidden methods.`,
+  principle: `${title} organizes public SANCTUM language for ${category.toLowerCase()} without exposing implementation systems or hidden methods.`,
   diagram,
   updated,
   observe: ['Visible environmental conditions', 'Room purpose and daily rhythm', 'Environmental design language'],

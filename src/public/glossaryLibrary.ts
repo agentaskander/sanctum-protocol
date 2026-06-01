@@ -149,7 +149,7 @@ export const glossaryEntries: GlossaryEntry[] = terms.map((term, index) => {
     term,
     category,
     definition: `${term} is SANCTUM Protocol public vocabulary for reading human spaces through light, sound, air, material, nature, rhythm, and room purpose.`,
-    whyItMatters: `The term matters because it gives designers, partners, researchers, and public readers a precise way to discuss ${category.toLowerCase()} without exposing private ontology and internal evaluation, or internal operating systems.`,
+    whyItMatters: `The term matters because it gives designers, partners, researchers, and public readers a precise way to discuss ${category.toLowerCase()} without exposing protected ontology detail, evaluation machinery, or operating systems.`,
     relatedConcepts: [terms[(index + 7) % terms.length], terms[(index + 19) % terms.length], terms[(index + 31) % terms.length]],
     relatedPages: pageFor(category, index),
   }

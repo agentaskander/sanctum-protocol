@@ -758,6 +758,10 @@ details,
   overflow-wrap: anywhere;
 }
 
+.glossary-card.is-hidden {
+  display: none !important;
+}
+
 .comparison-table {
   border: 1px solid rgba(52, 63, 53, 0.14);
   border-radius: 22px;

@@ -69,7 +69,7 @@ const professionalLinks = [
   { label: 'Professional Frameworks', href: '/professional-frameworks', text: 'Environmental bridge frameworks for designers and operators.' },
   { label: 'Room Archetypes', href: '/room-archetypes', text: 'Sleep, focus, recovery, creative, and nature sanctuary room patterns.' },
   { label: 'Assessments', href: '/assessments', text: 'Non-diagnostic room review language for light, sound, air, nature, and rhythm.' },
-  { label: 'Design Systems', href: '/design-systems', text: 'Implementation-oriented environmental intelligence without private logic.' },
+  { label: 'Design Systems', href: '/design-systems', text: 'Implementation-oriented environmental intelligence without protected logic.' },
   { label: 'Case Studies', href: '/case-studies', text: 'Environmental examples of environmental intelligence in practice.' },
   { label: 'Implementation Guides', href: '/implementation-guides', text: 'Stepwise public guidance for improving human-centered rooms.' },
 ]
@@ -125,7 +125,7 @@ const pageDetails: Record<string, { label: string; principle: string; observe: s
   },
   Research: {
     label: 'Authority Library',
-    principle: 'The public research library organizes the visible pillars of environmental intelligence without publishing private methods. It gives the category a shared language.',
+    principle: 'The research library organizes the visible pillars of environmental intelligence with bounded educational language. It gives the category a shared language.',
     observe: ['Questions that connect buildings to human state', 'Research themes across light, sound, air, nature, recovery, and rhythm', 'Where design claims need clearer boundaries'],
     tune: ['Separate established principles from interpretation', 'Use environmental vocabulary consistently', 'Keep claims educational and non-medical'],
   },
@@ -137,15 +137,15 @@ const pageDetails: Record<string, { label: string; principle: string; observe: s
   },
   'SANCTUM Protocol': {
     label: 'Environmental Intelligence Framework',
-    principle: 'SANCTUM Protocol is the public language layer for environmental intelligence: a way to discuss human spaces without turning private systems into public content.',
+    principle: 'SANCTUM Protocol is the public language layer for environmental intelligence: a way to discuss human spaces without turning implementation details into public content.',
     observe: ['How public language frames the category', 'Where architecture affects sleep, focus, recovery, and rhythm', 'Which concepts can be safely shared'],
     tune: ['Keep the research framework elegant and bounded', 'Use diagrams that explain, not expose', 'Connect protocol language to Studio implementation'],
   },
   'Professional Frameworks': {
     label: 'Professional Layer',
-    principle: 'Professional frameworks translate environmental intelligence into client-ready design language while keeping internal SANCTUM implementation methods out of public view.',
+    principle: 'Professional frameworks translate environmental intelligence into client-ready design language while keeping implementation methods out of public view.',
     observe: ['Which room state the work supports', 'Which environmental layers are relevant', 'Where a professional brief needs boundaries before implementation'],
-    tune: ['Use environmental layer names', 'Separate design judgment from private systems', 'Document intent, observation, and implementation without hidden logic'],
+    tune: ['Use environmental layer names', 'Separate design judgment from implementation details', 'Document intent, observation, and implementation without hidden logic'],
   },
   'Room Archetypes': {
     label: 'Professional Layer',
@@ -155,7 +155,7 @@ const pageDetails: Record<string, { label: string; principle: string; observe: s
   },
   Assessments: {
     label: 'Professional Layer',
-    principle: 'Assessments are environmental room reviews that help professionals discuss observations without publishing internal evaluation machinery.',
+    principle: 'Assessments are environmental room reviews that help professionals discuss observations without publishing evaluation machinery.',
     observe: ['Visible friction in light, sound, air, nature, material, and rhythm', 'Client goals stated as room states', 'Maintenance and repeatability constraints'],
     tune: ['Use qualitative language', 'Avoid formulas and hidden rankings', 'Turn findings into practical design priorities'],
   },
@@ -163,13 +163,13 @@ const pageDetails: Record<string, { label: string; principle: string; observe: s
     label: 'Professional Layer',
     principle: 'Design systems connect environmental intelligence to repeatable implementation: briefs, palettes, lighting plans, acoustic moves, air practices, nature integration, and reset rituals.',
     observe: ['Where the system needs consistency', 'Which layers can be implemented now', 'What must stay flexible for real use'],
-    tune: ['Build room systems instead of isolated tips', 'Keep method environmental', 'Use SANCTUM language without exposing private machinery'],
+    tune: ['Build room systems instead of isolated tips', 'Keep method environmental', 'Use SANCTUM language without exposing implementation machinery'],
   },
   'Case Studies': {
     label: 'Professional Layer',
     principle: 'Case studies show how environmental intelligence can guide real spaces through environmental before-and-after narratives, design intent, interventions, and observed usability changes.',
     observe: ['The initial room condition', 'The design intent and research framework used', 'Which changes improved the room experience'],
-    tune: ['Show outcomes without medical claims', 'Keep examples architectural and experiential', 'Avoid internal analysis details'],
+    tune: ['Show outcomes without medical claims', 'Keep examples architectural and experiential', 'Avoid implementation analysis details'],
   },
   'Implementation Guides': {
     label: 'Professional Layer',
@@ -181,7 +181,7 @@ const pageDetails: Record<string, { label: string; principle: string; observe: s
     label: 'SEO Library',
     principle: 'SANCTUM stories translate environmental intelligence into public narratives about sleep, focus, recovery, nature contact, and room rhythm.',
     observe: ['The room condition at the start of the story', 'The human state the room should support', 'The environmental layer being changed'],
-    tune: ['Keep the story architectural and experiential', 'Avoid private method details', 'Connect the narrative back to the research framework'],
+    tune: ['Keep the story architectural and experiential', 'Avoid implementation method details', 'Connect the narrative back to the research framework'],
   },
   Articles: {
     label: 'SEO Library',
@@ -193,7 +193,7 @@ const pageDetails: Record<string, { label: string; principle: string; observe: s
     label: 'SEO Library',
     principle: 'SANCTUM guides give environmental steps for improving rooms through light, sound, air, nature, material, and rhythm.',
     observe: ['The room purpose', 'The strongest sensory friction', 'The easiest intervention to maintain'],
-    tune: ['Start with one room and one state', 'Sequence changes by environmental layer', 'Keep the guidance useful without exposing private logic'],
+    tune: ['Start with one room and one state', 'Sequence changes by environmental layer', 'Keep the guidance useful without exposing implementation logic'],
   },
 }
 
@@ -223,7 +223,7 @@ function page(path: string, title: string, description: string, h1: string, topi
     faqs: [
       { question: `What is ${topic}?`, answer: `${topic} is part of SANCTUM Protocol's environmental intelligence language for human-centered spaces.` },
       { question: 'Is this medical guidance?', answer: 'No. SANCTUM Protocol is educational and informational only. It does not diagnose, treat, cure, or prevent disease.' },
-      { question: 'Does this reveal private SANCTUM systems?', answer: 'No. These pages use environmental vocabulary, public diagrams, and conceptual frameworks only.' },
+      { question: 'Does this reveal SANCTUM implementation details?', answer: 'No. These pages use environmental vocabulary, diagrams, and conceptual frameworks only.' },
       { question: 'Where should a reader begin?', answer: 'Begin with one room, one intended state, and the sensory conditions that most clearly support or interrupt that state.' },
     ],
     links: [...professionalLinks, ...protocolLinks].filter((link) => link.href !== path).slice(0, 6),
@@ -276,7 +276,7 @@ export const betaPages: PublicPage[] = betaSources.map((sourcePath) => {
     h1: sourcePath === '/' ? 'SANCTUM Protocol Beta Preview' : `${source.h1} Beta Preview`,
     label: 'Beta Preview',
     description: `Public-preview beta route for ${source.h1}. ${source.description}`,
-    intro: `${source.intro} This beta route is a public-preview surface and contains no internal ontology imports or private implementation logic.`,
+    intro: `${source.intro} This beta route is a preview surface and contains no protected framework imports or implementation logic.`,
     cta: `Preview ${source.h1} in the SANCTUM Protocol beta route namespace.`,
   }
 })
