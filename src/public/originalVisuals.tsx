@@ -9,7 +9,14 @@ const labels = {
   environment: {
     center: 'Environment',
     aria: 'Environmental Intelligence Layers',
-    nodes: ['Physical', 'Sensory', 'Cognitive', 'Recovery', 'Nature', 'Rhythm'],
+    nodes: [
+      { label: 'Physical', href: '/environment/physical' },
+      { label: 'Sensory', href: '/environment/sensory' },
+      { label: 'Cognitive', href: '/environment/cognitive' },
+      { label: 'Recovery', href: '/environment/recovery' },
+      { label: 'Nature', href: '/environment/nature' },
+      { label: 'Rhythm', href: '/environment/rhythm' },
+    ],
   },
 }
 
@@ -22,7 +29,12 @@ export function OriginalProtocolVisual(mode: ProtocolVisualMode = 'protocol', cl
         <span class="original-map-icon" aria-hidden="true"></span>
         <span>${visual.center}</span>
       </div>
-      ${visual.nodes.map((node, index) => `<span class="map-node node-${String.fromCharCode(97 + index)}">${node}</span>`).join('')}
+      ${visual.nodes.map((node, index) => {
+        const label = typeof node === 'string' ? node : node.label
+        const href = typeof node === 'string' ? '' : node.href
+        const className = `map-node node-${String.fromCharCode(97 + index)}`
+        return href ? `<a class="${className}" href="${href}" aria-label="Open ${label} environment hub">${label}</a>` : `<span class="${className}">${label}</span>`
+      }).join('')}
     </section>
   `
 }

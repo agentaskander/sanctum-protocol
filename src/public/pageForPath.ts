@@ -1,10 +1,11 @@
 import { betaPages, pages } from './siteContent'
 import { collectionRoutes, hubRoutes, seoPages } from './seoLibrary'
 import { allAuthorityRoutes } from './authorityLibrary'
+import { frameworkPillarPages } from './frameworkPillarLibrary'
 
 export function pageForPath(pathname: string) {
   const normalized = pathname.replace(/\/$/, '') || '/'
-  const authorityPage = allAuthorityRoutes.find((page) => page.path === normalized)
+  const authorityPage = [...frameworkPillarPages, ...allAuthorityRoutes].find((page) => page.path === normalized)
   if (authorityPage) return authorityPage
 
   const basePage = [...pages, ...betaPages, ...hubRoutes].find((page) => page.path === normalized)

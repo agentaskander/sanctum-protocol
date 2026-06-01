@@ -3,6 +3,7 @@ import { OriginalProtocolVisual } from './originalVisuals'
 import { glossaryEntries } from './glossaryLibrary'
 import { authorityRecords, comparisonRecords, partnerRecords, researchRecords, storyRecords } from './authorityLibrary'
 import { seoEntries } from './seoLibrary'
+import { frameworkPillarContent, frameworkPillarCounts, frameworkPillars, pillarsForGlossaryEntry } from './frameworkPillarLibrary'
 
 export function SeoHead(page: PublicPage) {
   document.title = page.title
@@ -130,7 +131,14 @@ function HomePage(page: PublicPage) {
           <h2>Environmental Intelligence Layers</h2>
         </div>
         ${OriginalProtocolVisual('environment', 'hero-diagram')}
-        <div class="layer-grid">${frameworkLayers.map((layer) => SurfaceCard(layer.title, layer.text, 'Framework Layer')).join('')}</div>
+        <div class="layer-grid">${frameworkLayers.map((layer, index) => SurfaceCard(layer.title, `${layer.text} Read the full ${frameworkPillars[index].shortTitle.toLowerCase()} environment hub.`, 'Framework Layer')).join('')}</div>
+      </section>
+      <section class="cinema-section library-section">
+        <div>
+          <p class="kicker">Framework Layers</p>
+          <h2>The diagram is now a navigable authority system.</h2>
+        </div>
+        <div class="layer-grid">${frameworkPillars.map((pillar) => FrameworkLayerCard(pillar)).join('')}</div>
       </section>
       <section id="pillars" class="cinema-section">
         <div class="section-head">
@@ -292,6 +300,8 @@ function PillarPage(page: PublicPage) {
       </section>
       ${DeepSeoSection(page)}
       ${SeoArticleSection(page)}
+      ${FrameworkPillarAuthoritySection(page)}
+      ${FrameworkPillarBridgeSection(page)}
       ${page.seoCollectionItems?.length ? '' : CollectionItemsSection(page)}
       ${ChecklistBlock(page.checklist)}
       <section id="related" class="cinema-section">
@@ -356,6 +366,23 @@ function SurfaceCard(title: string, text: string, eyebrow: string) {
 
 function LinkPanel(title: string, text: string, href: string, eyebrow: string) {
   return `<a class="surface-card link-panel" href="${href}"><span>${eyebrow}</span><h3>${title}</h3><p>${text}</p></a>`
+}
+
+function FrameworkLayerCard(pillar: (typeof frameworkPillars)[number]) {
+  const counts = frameworkPillarCounts(pillar)
+  return `
+    <a class="surface-card link-panel framework-layer-card" href="${pillar.route}">
+      <span>Framework Layer</span>
+      <h3>${pillar.shortTitle}</h3>
+      <p>${pillar.definition}</p>
+      <dl class="metric-row">
+        <div><dt>Research</dt><dd>${counts.research}</dd></div>
+        <div><dt>Stories</dt><dd>${counts.stories}</dd></div>
+        <div><dt>Glossary</dt><dd>${counts.glossary}</dd></div>
+      </dl>
+      <strong>Read more</strong>
+    </a>
+  `
 }
 
 function ListPanel(title: string, items: string[]) {
@@ -423,6 +450,71 @@ function SeoArticleSection(page: PublicPage) {
       <div class="article-body">${page.seoBody.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div>
       ${ComparisonTable(page)}
       ${page.seoDisclaimer ? `<div class="disclaimer"><strong>Disclaimer</strong><p>${page.seoDisclaimer}</p></div>` : ''}
+    </section>
+  `
+}
+
+function FrameworkPillarAuthoritySection(page: PublicPage) {
+  const pillar = frameworkPillars.find((item) => item.route === page.path)
+  if (!pillar) return ''
+
+  const content = frameworkPillarContent(pillar)
+  return `
+    <section class="cinema-section framework-authority-section">
+      <div class="section-head">
+        <p class="kicker">Connected Authority Hub</p>
+        <h2>${pillar.shortTitle} connects glossary, research, stories, comparisons, and partner pathways.</h2>
+      </div>
+      <div class="two-column">
+        ${ListPanel('Core Topics', pillar.topics)}
+        ${ListPanel('How To Use This Hub', [
+          `Start with ${pillar.shortTitle.toLowerCase()} as the primary room layer.`,
+          'Review the glossary terms before writing implementation language.',
+          'Use research notes and stories to ground the topic in public examples.',
+          'Choose a partner pathway when the reader is a professional team.',
+        ])}
+      </div>
+      <div class="library-grid framework-cluster">
+        ${FrameworkCollectionPanel('Related Glossary Entries', content.glossary.slice(0, 12).map((entry) => ({ label: entry.term, href: `/glossary#${entry.slug}`, text: entry.definition })))}
+        ${FrameworkCollectionPanel('Related Research Notes', content.research.slice(0, 12).map((item) => ({ label: item.title, href: `/research-library/${item.slug}`, text: item.description })))}
+        ${FrameworkCollectionPanel('Related Stories', content.stories.slice(0, 9).map((item) => ({ label: item.title, href: `/stories/${item.slug}`, text: item.description })))}
+        ${FrameworkCollectionPanel('Related Comparisons', content.comparisons.slice(0, 9).map((item) => ({ label: item.title, href: `/comparisons/${item.slug}`, text: item.description })))}
+        ${FrameworkCollectionPanel('Related Partner Pages', content.partners.slice(0, 6).map((item) => ({ label: item.title, href: `/partners/${item.slug}`, text: item.description })))}
+        ${FrameworkCollectionPanel('Related Framework Pillars', frameworkPillars.filter((item) => item.slug !== pillar.slug).map((item) => ({ label: item.shortTitle, href: item.route, text: item.description })))}
+      </div>
+    </section>
+  `
+}
+
+function FrameworkCollectionPanel(title: string, links: { label: string; href: string; text: string }[]) {
+  return `
+    <article class="knowledge-panel framework-list-panel">
+      <h3>${title}</h3>
+      <div class="compact-link-list">${links.map((link) => `<a href="${link.href}"><strong>${link.label}</strong><span>${link.text}</span></a>`).join('')}</div>
+    </article>
+  `
+}
+
+function FrameworkPillarBridgeSection(page: PublicPage) {
+  if (frameworkPillars.some((pillar) => pillar.route === page.path)) return ''
+  const isRecordPage = page.path.startsWith('/research-library/') || page.path.startsWith('/stories/') || page.path.startsWith('/comparisons/') || page.path.startsWith('/partners/') || page.path.startsWith('/articles/')
+  if (!isRecordPage) return ''
+
+  const related = frameworkPillars
+    .filter((pillar) => {
+      const source = `${page.h1} ${page.description} ${page.label} ${page.intro} ${(page.seoBody ?? []).join(' ')}`.toLowerCase()
+      return pillar.searchTerms.some((term) => source.includes(term.toLowerCase()))
+    })
+    .slice(0, 3)
+  const pillars = related.length ? related : [frameworkPillars[0]]
+
+  return `
+    <section class="cinema-section">
+      <div class="section-head">
+        <p class="kicker">Framework Pillar Links</p>
+        <h2>This page belongs to the larger environmental intelligence framework.</h2>
+      </div>
+      <div class="pillar-grid">${pillars.map((pillar) => LinkPanel(pillar.title, pillar.description, pillar.route, 'Related Pillar')).join('')}</div>
     </section>
   `
 }
@@ -504,10 +596,12 @@ function GlossaryPage(page: PublicPage) {
 
 function GlossaryCard(entry: (typeof glossaryEntries)[number]) {
   const searchText = [entry.term, entry.slug, entry.definition, entry.category, entry.whyItMatters, ...entry.relatedConcepts, ...entry.relatedPages].join(' ').toLowerCase()
+  const pillarBadges = pillarsForGlossaryEntry(entry)
   return `
     <article id="${entry.slug}" class="surface-card glossary-card" data-term="${entry.term.toLowerCase()}" data-category="${entry.category.toLowerCase()}" data-category-label="${entry.category}" data-search="${searchText}">
       <span>${entry.category}</span>
       <h3>${entry.term}</h3>
+      <div class="pillar-badge-row">${pillarBadges.map((pillar) => `<a href="${pillar.route}">${pillar.shortTitle}</a>`).join('')}</div>
       <p>${entry.definition}</p>
       <p><strong>Why it matters:</strong> ${entry.whyItMatters}</p>
       <div class="mini-link-row">${entry.relatedConcepts.map((term) => `<a href="/glossary#${slugFor(term)}">${term}</a>`).join('')}</div>

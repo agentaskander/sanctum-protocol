@@ -651,9 +651,25 @@ details,
   min-width: 112px;
   min-height: 44px;
   border-radius: 999px;
+  text-decoration: none;
   padding: 0 16px;
   font-size: 13px;
   font-weight: 760;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.original-protocol-map a.map-node:hover,
+.original-protocol-map a.map-node:focus-visible {
+  border-color: rgba(83, 75, 58, 0.34);
+  background: rgba(255, 252, 245, 0.96);
+  box-shadow: 0 18px 48px rgba(78, 61, 36, 0.18);
+  color: #1f271f;
+  outline: none;
+}
+
+.original-protocol-map a.map-node:focus-visible {
+  outline: 3px solid rgba(138, 115, 73, 0.35);
+  outline-offset: 4px;
 }
 
 .original-protocol-map .node-a {
@@ -717,6 +733,89 @@ details,
   font-size: 12px;
   font-weight: 760;
   padding: 8px 11px;
+}
+
+.framework-layer-card {
+  gap: 16px;
+}
+
+.framework-layer-card strong {
+  color: #283426;
+  font-size: 13px;
+}
+
+.metric-row {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.metric-row div {
+  border: 1px solid rgba(83, 75, 58, 0.13);
+  border-radius: 8px;
+  background: rgba(255, 253, 247, 0.54);
+  padding: 10px;
+}
+
+.metric-row dt {
+  color: #66715d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.metric-row dd {
+  color: #20281f;
+  font-size: 20px;
+  font-weight: 850;
+  margin: 2px 0 0;
+}
+
+.framework-authority-section .framework-cluster {
+  margin-top: 18px;
+}
+
+.framework-list-panel {
+  min-width: 0;
+}
+
+.compact-link-list {
+  display: grid;
+  gap: 10px;
+}
+
+.compact-link-list a {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid rgba(83, 75, 58, 0.12);
+  color: #283426;
+  padding-top: 10px;
+  text-decoration: none;
+}
+
+.compact-link-list span {
+  color: #66715d;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.pillar-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.pillar-badge-row a {
+  border: 1px solid rgba(83, 75, 58, 0.15);
+  border-radius: 999px;
+  background: rgba(255, 253, 247, 0.66);
+  color: #5c654f;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 6px 9px;
+  text-decoration: none;
 }
 
 .category-strip button {
