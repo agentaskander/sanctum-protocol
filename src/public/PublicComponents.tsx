@@ -27,15 +27,56 @@ export function PageShell(page: PublicPage) {
 export function BindPublicInteractions() {
   const search = document.getElementById('glossary-search') as HTMLInputElement | null
   const cards = Array.from(document.querySelectorAll<HTMLElement>('.glossary-card'))
+  const categoryButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-glossary-category]'))
+  const count = document.getElementById('glossary-count')
+  const empty = document.getElementById('glossary-empty')
   if (!search || !cards.length) return
 
-  search.addEventListener('input', () => {
+  const params = new URLSearchParams(window.location.search)
+  let activeCategory = params.get('category') ?? ''
+  search.value = params.get('q') ?? ''
+
+  const applyFilter = () => {
     const query = search.value.trim().toLowerCase()
+    let visible = 0
+
     cards.forEach((card) => {
-      const haystack = `${card.getAttribute('data-term') ?? ''} ${card.getAttribute('data-category') ?? ''} ${card.textContent ?? ''}`.toLowerCase()
-      card.hidden = query.length > 0 && !haystack.includes(query)
+      const category = card.getAttribute('data-category-label') ?? ''
+      const haystack = card.getAttribute('data-search') ?? card.textContent ?? ''
+      const matchesQuery = !query || haystack.toLowerCase().includes(query)
+      const matchesCategory = !activeCategory || category === activeCategory
+      const isVisible = matchesQuery && matchesCategory
+      card.hidden = !isVisible
+      if (isVisible) visible += 1
+    })
+
+    categoryButtons.forEach((button) => {
+      const category = button.getAttribute('data-glossary-category') ?? ''
+      button.classList.toggle('is-active', category === activeCategory)
+      button.setAttribute('aria-pressed', String(category === activeCategory))
+    })
+
+    if (count) count.textContent = `Showing ${visible} of ${cards.length} terms`
+    if (empty) empty.hidden = visible !== 0
+
+    const next = new URLSearchParams()
+    if (search.value.trim()) next.set('q', search.value.trim())
+    if (activeCategory) next.set('category', activeCategory)
+    const queryString = next.toString()
+    const nextUrl = `${window.location.pathname}${queryString ? `?${queryString}` : ''}`
+    window.history.replaceState(null, '', nextUrl)
+  }
+
+  search.addEventListener('input', applyFilter)
+  categoryButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-glossary-category') ?? ''
+      activeCategory = activeCategory === category ? '' : category
+      applyFilter()
     })
   })
+
+  applyFilter()
 }
 
 function HomePage(page: PublicPage) {
@@ -409,13 +450,18 @@ function GlossaryPage(page: PublicPage) {
           <h2>Environmental intelligence vocabulary.</h2>
         </div>
         <input id="glossary-search" class="glossary-search" type="search" placeholder="Search environmental intelligence, recovery, rhythm, sound, light, nature..." aria-label="Search glossary" />
-        <div class="category-strip">${glossaryCategories.map((category) => `<a href="#${slugFor(category)}">${category}</a>`).join('')}</div>
+        <div class="category-strip" role="group" aria-label="Filter glossary categories">
+          <button type="button" class="is-active" data-glossary-category="" aria-pressed="true">All</button>
+          ${glossaryCategories.map((category) => `<button type="button" data-glossary-category="${category}" aria-pressed="false">${category}</button>`).join('')}
+        </div>
+        <p id="glossary-count" class="glossary-count">Showing ${alphabetical.length} of ${alphabetical.length} terms</p>
       </section>
       <section class="cinema-section">
         <div class="section-head">
           <p class="kicker">Alphabetical Listing</p>
-          <h2>100 public SANCTUM terms.</h2>
+          <h2>${alphabetical.length} public SANCTUM terms.</h2>
         </div>
+        <div id="glossary-empty" class="empty-state" hidden>No glossary terms match this filter. Clear the search or choose All.</div>
         <div id="glossary-list" class="glossary-grid">${alphabetical.map(GlossaryCard).join('')}</div>
       </section>
       <section class="cinema-section">
@@ -434,8 +480,9 @@ function GlossaryPage(page: PublicPage) {
 }
 
 function GlossaryCard(entry: (typeof glossaryEntries)[number]) {
+  const searchText = [entry.term, entry.definition, entry.category, entry.whyItMatters, ...entry.relatedConcepts, ...entry.relatedPages].join(' ').toLowerCase()
   return `
-    <article id="${entry.slug}" class="surface-card glossary-card" data-term="${entry.term.toLowerCase()}" data-category="${entry.category.toLowerCase()}">
+    <article id="${entry.slug}" class="surface-card glossary-card" data-term="${entry.term.toLowerCase()}" data-category="${entry.category.toLowerCase()}" data-category-label="${entry.category}" data-search="${searchText}">
       <span>${entry.category}</span>
       <h3>${entry.term}</h3>
       <p>${entry.definition}</p>
